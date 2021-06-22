@@ -1,2 +1,3 @@
-# blue-bird-sso
-蓝鸟认证服务
+# bird-common-sso
+
+用户认证系统
