@@ -1,3 +1,3 @@
-# bird-common-sso
+# blue-bird-sso
 
-用户认证系统
+蓝鸟认证系统（基于spring-security开发，支持认证、授权）
