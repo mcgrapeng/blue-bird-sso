@@ -1,0 +1,75 @@
+server:
+#  tomcat:
+#    max-swallow-size: -1
+#  port: 8899
+#  ssl:
+#        key-store: classpath:server.p12
+#        key-store-password: bird
+#        key-store-type: PKCS12
+#        key-alias: 1
+#        # 证书有效期2年
+  compression:
+    enabled: true
+    mime-types: application/json
+  servlet:
+      context-path: /
+      multipart:
+           # 默认支持文件上传
+          enabled: true
+          #上传一个文件最大值  默认是1MB
+          max-file-size: -1
+          #上传多个文件最大值  默认是10MB
+          max-request-size: -1
+
+      session:
+        cookie:
+          http-only: true
+          secure: true
+
+spring:
+  profiles:
+    active: @profileActive@
+
+
+# 静态文件请求匹配方式
+  mvc:
+    static-path-pattern: /**
+
+  resources:
+      static-locations: classpath:/static/
+  http:
+      encoding:
+        force: true
+        charset: UTF-8
+  servlet:
+      multipart:
+        max-file-size: -1
+        max-request-size: -1
+  application:
+    name: bird-common-sso
+#  datasource:
+#    type: com.zaxxer.hikari.HikariDataSource
+#    url: jdbc:mysql://xx.0.xx.xx:3306/oauth2_config?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+#    username: xxxxx
+#    password: xxxxxxx
+#    driver-class-name: com.mysql.jdbc.Driver
+
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude: '*' # 需要开放的端点。默认值只打开 health 和 info 两个端点。通过设置 * ，可以开放所有端点。
+  endpoint:
+    # Health 端点配置项，对应 HealthProperties 配置类
+    health:
+      enabled: true # 是否开启。默认为 true 开启。
+      show-details: ALWAYS # 何时显示完整的健康信息。默认为 NEVER 都不展示。可选 WHEN_AUTHORIZED 当经过授权的用户；可选 ALWAYS 总是展示
+
+
+#默认情况下，Spring Boot 只会记录 ERROR、WARN 和 INFO 级别的日志。可能有时我们启动 Spring Boot 失败时，需要通过启动 Spring Boot 调试模式：
+# 让核心 Logger（内嵌容器、Hibernate 和 Spring Boot 等等）打印 DEBUG 级别的日志，方便排查原因
+# 应用中的其它 Logger 还是保持原有的日志级别。
+debug: true
+
+#去除无关日志打印
+logging.level.org.springframework.boot.autoconfigure: ERROR

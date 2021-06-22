@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bird.sso.mapper.AppVersionMapper">
+
+    <resultMap id="BaseResultMap" type="com.bird.sso.domain.AppVersion">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="key" property="key" jdbcType="VARCHAR"/>
+        <result column="original_filename" property="originalFilename" jdbcType="VARCHAR"/>
+        <result column="version_code" property="versionCode" jdbcType="VARCHAR"/>
+        <result column="download_url" property="downloadUrl" jdbcType="VARCHAR"/>
+        <result column="describe" property="describe" jdbcType="VARCHAR"/>
+        <result column="md5" property="md5" jdbcType="VARCHAR"/>
+        <result column="signature" property="signature" jdbcType="VARCHAR"/>
+        <result column="is_force" property="isForce" jdbcType="VARCHAR"/>
+        <result column="package_name" property="packageName" jdbcType="VARCHAR"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="editor" property="editor" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <sql id="table_name">  app_version </sql>
+
+    <sql id="Base_Column_List">
+        id,
+        `key`,
+        original_filename,
+        version_code,
+        download_url,
+        `describe`,
+        md5,
+        signature,
+        is_force,
+        package_name,
+        create_time
+    </sql>
+
+    <sql id="condition_sql">
+        <if test="packageName != null and packageName != ''">and package_name = #{packageName,jdbcType=VARCHAR}</if>
+        <if test="versionCode != null and versionCode != ''">and version_code = #{versionCode,jdbcType=VARCHAR}</if>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.bird.sso.domain.AppVersion">
+        insert into
+        <include refid="table_name"/>
+        (
+        `key`,
+        original_filename,
+        version_code,
+        download_url,
+        `describe`,
+        md5,
+        signature,
+        is_force,
+        package_name,
+        create_time)
+        values (
+        #{key,jdbcType=VARCHAR},
+        #{originalFilename,jdbcType=VARCHAR},
+        #{versionCode,jdbcType=VARCHAR},
+        #{downloadUrl,jdbcType=VARCHAR},
+        #{describe,jdbcType=VARCHAR},
+        #{md5,jdbcType=VARCHAR},
+        #{signature,jdbcType=VARCHAR},
+        #{isForce,jdbcType=VARCHAR},
+        #{packageName,jdbcType=VARCHAR},
+        now()
+        )
+    </insert>
+
+
+    <update id="update" parameterType="com.bird.sso.domain.AppVersion">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="key != null and key != ''">`key`=#{key,jdbcType=VARCHAR},</if>
+            <if test="originalFilename != null and originalFilename != ''">
+                original_filename=#{originalFilename,jdbcType=VARCHAR},
+            </if>
+            <if test="versionCode != null and versionCode != ''">version_code=#{versionCode,jdbcType=VARCHAR},</if>
+            <if test="downloadUrl != null and downloadUrl != ''">download_url=#{downloadUrl,jdbcType=VARCHAR},</if>
+            <if test="describe != null and describe != ''">`describe`=#{describe,jdbcType=VARCHAR},</if>
+            <if test="isForce != null and isForce != ''">is_force=#{isForce,jdbcType=VARCHAR},</if>
+            <if test="packageName != null and packageName != ''">package_name=#{packageName,jdbcType=VARCHAR},</if>
+
+        </trim>
+        where package_name = #{packageName,jdbcType=VARCHAR} and version_code = #{versionCode,jdbcType=VARCHAR}
+    </update>
+
+
+    <select id="getBy" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+    </select>
+
+
+    <select id="getMaxVersion" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+
+        <where>
+            <if test="packageName != null and packageName != ''">
+                and package_name = #{packageName,jdbcType=VARCHAR}
+            </if>
+
+            <if test="key != null and key != ''">
+                and `key` = #{key,jdbcType=VARCHAR}
+            </if>
+        </where>
+
+        order by version_code desc limit 1
+    </select>
+
+
+    <select id="getNextVersion" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+
+        where package_name = #{packageName,jdbcType=VARCHAR}
+
+        <if test="versionCode != null and versionCode != ''">
+            and version_code > #{versionCode,jdbcType=VARCHAR}
+        </if>
+
+        order by version_code asc limit 1
+    </select>
+
+
+    <select id="selectBy" resultType="com.bird.sso.domain.AppVersion"
+            parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+        <if test="page != null and pageSize != null">
+            limit #{page},#{pageSize}
+        </if>
+    </select>
+
+
+    <select id="count" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+        select
+        count(*)
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+    </select>
+
+
+    <delete id="delete">
+        DELETE FROM
+        <include refid="table_name"/>
+        where id = #{id, jdbcType=INTEGER}
+    </delete>
+
+</mapper>

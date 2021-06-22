@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bird.sso.mapper.SysUserVersionMapper">
+    <resultMap id="BaseResultMap" type="com.bird.sso.domain.SysUserVersion">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="app_type" jdbcType="VARCHAR" property="appType"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="old_user_name" jdbcType="VARCHAR" property="oldUserName"/>
+        <result column="new_user_name" jdbcType="VARCHAR" property="newUserName"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="creator" jdbcType="VARCHAR" property="creator"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      user_id, old_user_name,app_type,
+      new_user_name, real_name, creator,
+      create_time
+    </sql>
+
+
+    <sql id="table_name">  sys_user_version </sql>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="com.bird.sso.domain.SysUserVersion">
+        insert into
+        <include refid="table_name"/>
+        (app_type ,user_id, old_user_name,
+        new_user_name, real_name, creator,
+        create_time, remark)
+        values (#{appType,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{oldUserName,jdbcType=VARCHAR},
+        #{newUserName,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR},
+        NOW(), #{remark,jdbcType=VARCHAR})
+    </insert>
+
+
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        where user_id = #{userId, jdbcType=BIGINT} and app_type = #{appType,jdbcType=VARCHAR}
+        order by create_time desc limit 5
+    </select>
+</mapper>

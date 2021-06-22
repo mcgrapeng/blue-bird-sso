@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bird.sso.mapper.RoleMapper">
+
+    <resultMap id="BaseResultMap" type="SysRole">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="sid" property="sid" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="role_type" property="roleType" jdbcType="VARCHAR"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="app_type" property="appType" jdbcType="VARCHAR"/>
+        <result column="client_type" property="clientType" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="pid" property="pid" jdbcType="BIGINT"/>
+        <result column="menus" property="menus" jdbcType="VARCHAR"/>
+        <result column="opers" property="opers" jdbcType="VARCHAR"/>
+        <result column="data_scope" property="dataScope" jdbcType="VARCHAR"/>
+        <result column="orgs" property="orgs" jdbcType="VARCHAR"/>
+        <result column="is_available" property="isAvailable" jdbcType="CHAR"/>
+        <result column="is_default" property="isDefault" jdbcType="CHAR"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="editor" property="editor" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="table_name">  sys_role </sql>
+
+    <sql id="Base_Column_List">
+        sid,
+        `name`,
+        code,
+        role_type,
+        `level`,
+        app_type,
+        client_type,
+        `type`,
+        pid,
+        menus,
+        opers,
+        data_scope,
+        orgs,
+        is_available,
+        is_default,
+        creator,
+        remark,
+        create_time
+    </sql>
+
+    <sql id="condition_sql">
+        <if test="sid != null">and sid = #{sid,jdbcType=BIGINT}</if>
+        <if test="name != null and name != ''">and `name` LIKE #{name,jdbcType=VARCHAR}</if>
+        <if test="code != null and code != ''">and code = #{code,jdbcType=VARCHAR}</if>
+        <if test="pid != null ">and pid = #{pid,jdbcType=BIGINT}</if>
+        <if test="type != null and type != ''">and `type` = #{type,jdbcType=VARCHAR}</if>
+        <if test="appType != null and appType != ''">and app_type = #{appType,jdbcType=VARCHAR}</if>
+        <if test="roleType != null and roleType != ''">and role_type = #{roleType,jdbcType=VARCHAR}</if>
+        <if test="clientType != null and clientType != ''">and client_type = #{clientType,jdbcType=VARCHAR}</if>
+        <if test="isAvailable != null and isAvailable != ''">and is_available = #{isAvailable,jdbcType=CHAR}</if>
+        <if test="isDefault != null and isDefault != ''">and is_default = #{isDefault,jdbcType=CHAR}</if>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="SysRole">
+        insert into
+        <include refid="table_name"/>
+        (
+        sid,
+        `name`,
+        code,
+        role_type,
+        `level`,
+        app_type,
+        client_type,
+        `type`,
+        pid,
+        menus,
+        opers,
+        data_scope,
+        orgs,
+        is_available,
+        is_default,
+        creator,
+        remark,
+        create_time)
+        values (
+        #{sid,jdbcType=BIGINT},
+        #{name,jdbcType=VARCHAR},
+        #{code,jdbcType=VARCHAR},
+        #{roleType,jdbcType=VARCHAR},
+        #{level,jdbcType=INTEGER},
+        #{appType,jdbcType=VARCHAR},
+        #{clientType,jdbcType=VARCHAR},
+        #{type,jdbcType=VARCHAR},
+        #{pid,jdbcType=BIGINT},
+        #{menus,jdbcType=VARCHAR},
+        #{opers,jdbcType=VARCHAR},
+        #{dataScope,jdbcType=VARCHAR},
+        #{orgs,jdbcType=VARCHAR},
+        #{isAvailable,jdbcType=CHAR},
+        #{isDefault,jdbcType=CHAR},
+        #{creator,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR},
+        now()
+        )
+    </insert>
+
+    <update id="update" parameterType="SysRole">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name != ''">`name`=#{name,jdbcType=VARCHAR},</if>
+            <if test="code != null and code != ''">code=#{code,jdbcType=VARCHAR},</if>
+            <if test="roleType != null and roleType != ''">role_type=#{roleType,jdbcType=VARCHAR},</if>
+            <if test="level != null">`level`=#{level,jdbcType=INTEGER},</if>
+            <if test="menus != null and menus != ''">menus=#{menus,jdbcType=VARCHAR},</if>
+            <if test="clientType != null and clientType != ''">client_type=#{clientType,jdbcType=VARCHAR},</if>
+            <if test="type != null and type != ''">`type`=#{type,jdbcType=VARCHAR},</if>
+            <if test="dataScope != null and dataScope != ''">data_scope=#{dataScope,jdbcType=VARCHAR},</if>
+            <if test="orgs != null and orgs != ''">orgs=#{orgs,jdbcType=VARCHAR},</if>
+            <if test="isAvailable != null and isAvailable != ''">is_available=#{isAvailable,jdbcType=CHAR},</if>
+            <if test="isDefault != null and isDefault != ''">is_default=#{isDefault,jdbcType=CHAR},</if>
+            <if test="remark != null and remark != ''">remark=#{remark,jdbcType=VARCHAR},</if>
+            update_time= NOW(),
+            editor = #{editor,jdbcType=VARCHAR},
+        </trim>
+
+        <where>
+            sid = #{sid,jdbcType=BIGINT} and app_type = #{appType,jdbcType=VARCHAR}
+            <if test="pid != null ">and pid = #{pid,jdbcType=BIGINT}</if>
+        </where>
+    </update>
+
+
+    <update id="updateBy" parameterType="java.util.Map">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name != ''">`name`=#{name,jdbcType=VARCHAR},</if>
+            <if test="code != null and code != ''">code=#{code,jdbcType=VARCHAR},</if>
+            <if test="roleType != null and roleType != ''">role_type=#{roleType,jdbcType=VARCHAR},</if>
+            <if test="level != null">`level`=#{level,jdbcType=INTEGER},</if>
+            <if test="menus != null and menus != ''">menus=#{menus,jdbcType=VARCHAR},</if>
+            <if test="opers != null and opers != ''">opers=#{opers,jdbcType=VARCHAR},</if>
+            <if test="dataScope != null and dataScope != ''">data_scope=#{dataScope,jdbcType=VARCHAR},</if>
+            <if test="orgs != null and orgs != ''">orgs=#{orgs,jdbcType=VARCHAR},</if>
+            <if test="isAvailable != null and isAvailable != ''">is_available=#{isAvailable,jdbcType=CHAR},</if>
+            <if test="isDefault != null and isDefault != ''">is_default=#{isDefault,jdbcType=CHAR},</if>
+            <if test="remark != null and remark != ''">remark=#{remark,jdbcType=VARCHAR},</if>
+        </trim>
+
+        <where>
+            sid = #{sid,jdbcType=BIGINT} and app_type = #{appType,jdbcType=VARCHAR}
+            <if test="pid != null ">and pid = #{pid,jdbcType=BIGINT}</if>
+        </where>
+
+    </update>
+
+
+    <select id="getBy" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+    </select>
+
+
+    <select id="selectBy" resultType="SysRole"
+            parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="count" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+        select
+        count(*)
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+    </select>
+
+
+    <select id="selectByIds" resultType="SysRole">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and id IN
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+
+    <select id="selectBySids" resultType="SysRole">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and client_type = #{clientType,jdbcType=VARCHAR} and sid IN
+        <foreach collection="sids" item="sid" index="index" open="(" close=")" separator=",">
+            #{sid}
+        </foreach>
+
+    </select>
+
+
+    <select id="selectHasMenus" resultType="SysRole"
+            parameterType="java.lang.String">
+        select
+        sid,
+        pid,
+        app_type,
+        role_type,
+        client_type,
+        `type`,
+        menus
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR}
+        AND menus IS NOT NULL AND menus <![CDATA[ <>]]> '' AND menus <![CDATA[ <>]]> '[]'
+    </select>
+
+
+    <select id="selectALLRolesByAppType" resultType="SysRole"
+            parameterType="java.lang.String">
+        select
+        sid,
+        pid,
+        app_type,
+        role_type,
+        `name`,
+        code
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="selectDataScopeBySids" resultType="SysRole">
+        select
+        sid,
+        orgs,
+        role_type,
+        app_type
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and sid IN
+        <foreach collection="sids" item="sid" index="index" open="(" close=")" separator=",">
+            #{sid}
+        </foreach>
+
+    </select>
+
+
+    <select id="selectColumnBySids" resultType="SysRole">
+        select
+        sid,
+        pid,
+        orgs,
+        code,
+        `name`,
+        client_type,
+        role_type,
+        `type`,
+        app_type
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and sid IN
+        <foreach collection="sids" item="sid" index="index" open="(" close=")" separator=",">
+            #{sid}
+        </foreach>
+
+    </select>
+
+
+    <select id="selectColumnByCodes" resultType="SysRole">
+        select
+        sid,
+        pid,
+        client_type,
+        role_type,
+        `type`,
+        app_type
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and code IN
+        <foreach collection="codes" item="code" index="index" open="(" close=")" separator=",">
+            #{code}
+        </foreach>
+    </select>
+
+
+    <select id="selectByAppType_ClientType_Codes" resultType="SysRole">
+        select
+        sid,
+        pid,
+        client_type,
+        role_type,
+        `type`,
+        app_type
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and client_type = #{clientType,jdbcType=VARCHAR} and code IN
+        <foreach collection="codes" item="code" index="index" open="(" close=")" separator=",">
+            #{code}
+        </foreach>
+    </select>
+
+
+    <select id="selectTreeColumnBySids" resultType="SysRole">
+        select
+        sid,
+        pid,
+        app_type,
+        role_type,
+        `type`,
+        `name`,
+        code,
+        `level`
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and sid IN
+        <foreach collection="sids" item="sid" index="index" open="(" close=")" separator=",">
+            #{sid}
+        </foreach>
+    </select>
+
+
+    <select id="selectMenusBySids" resultType="java.lang.String">
+        select
+        menus
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and sid IN
+        <foreach collection="sids" item="sid" index="index" open="(" close=")" separator=",">
+            #{sid}
+        </foreach>
+    </select>
+
+    <delete id="delete">
+        DELETE FROM
+        <include refid="table_name"/>
+        where app_type = #{appType,jdbcType=VARCHAR} and id = #{id, jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteReference">
+        DELETE FROM
+        <include refid="table_name"/>
+        where sid = #{sid, jdbcType=BIGINT} and app_type = #{appType,jdbcType=VARCHAR}
+    </delete>
+
+</mapper>

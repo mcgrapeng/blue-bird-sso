@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bird.sso.mapper.UserMapper">
+
+
+    <resultMap id="BaseResultMap" type="SysUser">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="BIGINT"/>
+        <result column="wx_union_id" property="wxUnionId" jdbcType="VARCHAR"/>
+        <result column="wx_open_id" property="wxOpenId" jdbcType="VARCHAR"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+        <result column="user_pass" property="userPass" jdbcType="VARCHAR"/>
+        <result column="user_mobi" property="userMobi" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="user_email" property="userEmail" jdbcType="VARCHAR"/>
+        <result column="head_img" property="headImg" jdbcType="VARCHAR"/>
+        <result column="user_source" property="userSource" jdbcType="VARCHAR"/>
+        <result column="user_type" property="userType" jdbcType="VARCHAR"/>
+        <result column="app_type" property="appType" jdbcType="VARCHAR"/>
+        <result column="org_id" property="orgId" jdbcType="BIGINT"/>
+        <result column="org_name" property="orgName" jdbcType="VARCHAR"/>
+        <result column="parent_org_name" property="parentOrgName" jdbcType="VARCHAR"/>
+        <result column="roles" property="roles" jdbcType="VARCHAR"/>
+        <result column="is_permit_all" property="isPermitAll" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="is_bind_mobile" property="isBindMobile" jdbcType="CHAR"/>
+        <result column="login_times" property="loginTimes" jdbcType="INTEGER"/>
+        <result column="ext" property="ext" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="editor" property="editor" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
+    <sql id="table_name">  sys_user </sql>
+
+    <sql id="Base_Column_List">
+        user_id,
+        wx_union_id,
+        wx_open_id,
+        user_name,
+        user_pass,
+        user_mobi,
+        real_name,
+        nick_name,
+        head_img,
+        user_source,
+        user_email,
+        user_type,
+        app_type,
+        org_id,
+        org_name,
+        parent_org_name,
+        roles,
+        is_permit_all,
+        status,
+        is_bind_mobile,
+        login_times,
+        ext,
+        remark,
+        create_time,
+        update_time,
+        last_login_time
+    </sql>
+
+    <sql id="condition_sql">
+        <if test="id != null ">and id = #{id,jdbcType=INTEGER}</if>
+        <if test="userId != null ">and user_id = #{userId,jdbcType=BIGINT}</if>
+        <if test="appType != null and appType != ''">and app_type = #{appType,jdbcType=VARCHAR}</if>
+        <if test="wxOpenId != null and wxOpenId != ''">and wx_open_id = #{wxOpenId,jdbcType=VARCHAR}</if>
+        <if test="wxUnionId != null and wxUnionId != ''">and wx_union_id = #{wxUnionId,jdbcType=VARCHAR}</if>
+        <if test="orgId != null ">and org_id = #{orgId,jdbcType=BIGINT}</if>
+        <if test="userMobi != null and userMobi != ''">and user_mobi = #{userMobi,jdbcType=VARCHAR}</if>
+        <if test="userEmail != null and userEmail != ''">and user_email = #{userEmail,jdbcType=VARCHAR}</if>
+        <if test="userSource != null and userSource != ''">and user_source = #{userSource,jdbcType=VARCHAR}</if>
+        <if test="status != null and status != ''">and status = #{status,jdbcType=VARCHAR}</if>
+        <if test="userType != null and userType != ''">and user_type = #{userType,jdbcType=VARCHAR}</if>
+        <if test="userName != null and userName != ''">and user_name = #{userName,jdbcType=VARCHAR}</if>
+        <if test="isPermitAll != null and isPermitAll != ''">and is_permit_all = #{isPermitAll,jdbcType=VARCHAR}</if>
+        <if test="userIds != null">AND user_id in
+            <foreach collection="userIds" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </sql>
+
+
+    <sql id="update_condition_sql">
+        <if test="userId != null ">and user_id = #{userId,jdbcType=BIGINT}</if>
+        <if test="appType != null and appType != ''">and app_type = #{appType,jdbcType=VARCHAR}</if>
+        <if test="userName != null and userName != ''">and user_name = #{userName,jdbcType=VARCHAR}</if>
+    </sql>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="SysUser">
+        insert into
+        <include refid="table_name"/>
+        (
+        wx_union_id,
+        wx_open_id,
+        user_id,
+        user_name,
+        nick_name,
+        user_pass,
+        user_mobi,
+        real_name,
+        head_img,
+        user_source,
+        user_email,
+        user_type,
+        app_type,
+        org_id,
+        org_name,
+        parent_org_name,
+        roles,
+        is_permit_all,
+        status,
+        is_bind_mobile,
+        login_times,
+        ext,
+        remark,
+        create_time,
+        creator,
+        last_login_time)
+        values (
+        #{wxUnionId,jdbcType=VARCHAR},
+        #{wxOpenId,jdbcType=VARCHAR},
+        #{userId,jdbcType=BIGINT},
+        #{userName,jdbcType=VARCHAR},
+        #{nickName,jdbcType=VARCHAR},
+        #{userPass,jdbcType=VARCHAR},
+        #{userMobi,jdbcType=VARCHAR},
+        #{realName,jdbcType=VARCHAR},
+        #{headImg,jdbcType=VARCHAR},
+        #{userSource,jdbcType=VARCHAR},
+        #{userEmail,jdbcType=VARCHAR},
+        #{userType,jdbcType=VARCHAR},
+        #{appType,jdbcType=VARCHAR},
+        #{orgId,jdbcType=BIGINT},
+        #{orgName,jdbcType=VARCHAR},
+        #{parentOrgName,jdbcType=VARCHAR},
+        #{roles,jdbcType=VARCHAR},
+        #{isPermitAll,jdbcType=VARCHAR},
+        #{status,jdbcType=VARCHAR},
+        #{isBindMobile,jdbcType=CHAR},
+        #{loginTimes,jdbcType=INTEGER},
+        #{ext,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR},
+        now(),
+        #{creator,jdbcType=VARCHAR},
+        #{lastLoginTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="SysUser">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName != null and userName != ''">user_name=#{userName,jdbcType=VARCHAR},</if>
+            <if test="nickName != null and nickName != ''">nick_name=#{nickName,jdbcType=VARCHAR},</if>
+            <if test="userPass != null and userPass != ''">user_pass=#{userPass,jdbcType=VARCHAR},</if>
+            <if test="userMobi != null and userMobi != ''">user_mobi=#{userMobi,jdbcType=VARCHAR},</if>
+            <if test="realName != null and realName != ''">real_name=#{realName,jdbcType=VARCHAR},</if>
+            <if test="headImg != null and headImg != ''">head_img=#{headImg,jdbcType=VARCHAR},</if>
+            <if test="userSource != null and userSource != ''">user_source=#{userSource,jdbcType=VARCHAR},</if>
+            <if test="userEmail != null and userEmail != ''">user_email=#{userEmail,jdbcType=VARCHAR},</if>
+            <if test="userType != null and userType != ''">user_type=#{userType,jdbcType=VARCHAR},</if>
+            <if test="orgId != null">org_id = #{orgId,jdbcType=BIGINT},</if>
+            <if test="orgName != null and orgName != ''">org_name=#{orgName,jdbcType=VARCHAR},</if>
+            <if test="parentOrgName != null and parentOrgName != ''">
+                parent_org_name=#{parentOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="roles != null and roles != ''">roles=#{roles,jdbcType=VARCHAR},</if>
+            <if test="isPermitAll != null and isPermitAll != ''">is_permit_all=#{isPermitAll,jdbcType=VARCHAR},</if>
+            <if test="status != null and status != ''">status=#{status,jdbcType=VARCHAR},</if>
+            <if test="isBindMobile != null and isBindMobile != ''">is_bind_mobile=#{isBindMobile,jdbcType=CHAR},</if>
+            <if test="loginTimes != null and loginTimes != ''">login_times=#{loginTimes,jdbcType=INTEGER},</if>
+            <if test="ext != null and ext != ''">ext=#{ext,jdbcType=VARCHAR},</if>
+            <if test="remark != null  and remark != ''">remark=#{remark,jdbcType=VARCHAR},</if>
+            <if test="lastLoginTime != null">last_login_time=#{lastLoginTime,jdbcType=TIMESTAMP},</if>
+            update_time = NOW(),
+            editor = #{editor,jdbcType=VARCHAR},
+        </trim>
+
+        where app_type = #{appType,jdbcType=VARCHAR} and user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+
+    <update id="updateByUserName" parameterType="SysUser">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName != null and userName != ''">user_name=#{userName,jdbcType=VARCHAR},</if>
+            <if test="nickName != null and nickName != ''">nick_name=#{nickName,jdbcType=VARCHAR},</if>
+            <if test="userPass != null and userPass != ''">user_pass=#{userPass,jdbcType=VARCHAR},</if>
+            <if test="userMobi != null and userMobi != ''">user_mobi=#{userMobi,jdbcType=VARCHAR},</if>
+            <if test="realName != null and realName != ''">real_name=#{realName,jdbcType=VARCHAR},</if>
+            <if test="headImg != null and headImg != ''">head_img=#{headImg,jdbcType=VARCHAR},</if>
+            <if test="userEmail != null and userEmail != ''">user_email=#{userEmail,jdbcType=VARCHAR},</if>
+            <if test="userType != null and userType != ''">user_type=#{userType,jdbcType=VARCHAR},</if>
+            <if test="orgId != null">org_id = #{orgId,jdbcType=BIGINT},</if>
+            <if test="orgName != null and orgName != ''">org_name=#{orgName,jdbcType=VARCHAR},</if>
+            <if test="parentOrgName != null and parentOrgName != ''">
+                parent_org_name=#{parentOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="roles != null and roles != ''">roles=#{roles,jdbcType=VARCHAR},</if>
+            <if test="isPermitAll != null and isPermitAll != ''">is_permit_all=#{isPermitAll,jdbcType=VARCHAR},</if>
+            <if test="status != null and status != ''">status=#{status,jdbcType=VARCHAR},</if>
+            <if test="isBindMobile != null and isBindMobile != ''">is_bind_mobile=#{isBindMobile,jdbcType=CHAR},</if>
+            <if test="loginTimes != null and loginTimes != ''">login_times=#{loginTimes,jdbcType=INTEGER},</if>
+            <if test="ext != null and ext != ''">ext=#{ext,jdbcType=VARCHAR},</if>
+
+            <if test="remark != null  and remark != ''">remark=#{remark,jdbcType=VARCHAR},</if>
+            <if test="lastLoginTime != null">last_login_time=#{lastLoginTime,jdbcType=TIMESTAMP},</if>
+            update_time = NOW(),
+            editor = #{editor,jdbcType=VARCHAR},
+        </trim>
+
+        where app_type = #{appType,jdbcType=VARCHAR} and user_name = #{userName,jdbcType=VARCHAR}
+    </update>
+
+
+    <update id="updateMapByUserId" parameterType="java.util.Map">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="wxUnionId != null and wxUnionId != ''">wx_union_id=#{wxUnionId,jdbcType=VARCHAR},</if>
+            <if test="wxOpenId != null and wxOpenId != ''">wx_open_id=#{wxOpenId,jdbcType=VARCHAR},</if>
+            <if test="userName != null and userName != ''">user_name=#{userName,jdbcType=VARCHAR},</if>
+            <if test="nickName != null and nickName != ''">nick_name=#{nickName,jdbcType=VARCHAR},</if>
+            <if test="userPass != null and userPass != ''">user_pass=#{userPass,jdbcType=VARCHAR},</if>
+            <if test="userMobi != null and userMobi != ''">user_mobi=#{userMobi,jdbcType=VARCHAR},</if>
+            <if test="realName != null and realName != ''">real_name=#{realName,jdbcType=VARCHAR},</if>
+            <if test="headImg != null and headImg != ''">head_img=#{headImg,jdbcType=VARCHAR},</if>
+            <if test="userEmail != null and userEmail != ''">user_email=#{userEmail,jdbcType=VARCHAR},</if>
+            <if test="userType != null and userType != ''">user_type=#{userType,jdbcType=VARCHAR},</if>
+            <if test="appType != null and appType != ''">app_type=#{appType,jdbcType=VARCHAR},</if>
+            <if test="orgId != null">org_id = #{orgId,jdbcType=BIGINT},</if>
+            <if test="orgName != null and orgName != ''">org_name=#{orgName,jdbcType=VARCHAR},</if>
+            <if test="parentOrgName != null and parentOrgName != ''">
+                parent_org_name=#{parentOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="roles != null and roles != ''">roles=#{roles,jdbcType=VARCHAR},</if>
+            <if test="isPermitAll != null and isPermitAll != ''">is_permit_all=#{isPermitAll,jdbcType=VARCHAR},</if>
+            <if test="status != null and status != ''">status=#{status,jdbcType=VARCHAR},</if>
+            <if test="isBindMobile != null and isBindMobile != ''">is_bind_mobile=#{isBindMobile,jdbcType=CHAR},</if>
+            <if test="loginTimes != null and loginTimes != ''">login_times=#{loginTimes,jdbcType=INTEGER},</if>
+            <if test="ext != null and ext != ''">ext=#{ext,jdbcType=VARCHAR},</if>
+
+            <if test="remark != null  and remark != ''">city=#{remark,jdbcType=VARCHAR},</if>
+            <if test="lastLoginTime != null">last_login_time=#{lastLoginTime,jdbcType=TIMESTAMP},</if>
+            update_time = NOW(),
+            editor = #{editor,jdbcType=VARCHAR},
+        </trim>
+
+        where app_type = #{appType,jdbcType=VARCHAR} and user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+
+    <update id="updateMapByUserName" parameterType="java.util.Map">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="wxUnionId != null and wxUnionId != ''">wx_union_id=#{wxUnionId,jdbcType=VARCHAR},</if>
+            <if test="wxOpenId != null and wxOpenId != ''">wx_open_id=#{wxOpenId,jdbcType=VARCHAR},</if>
+            <if test="userName != null and userName != ''">user_name=#{userName,jdbcType=VARCHAR},</if>
+            <if test="nickName != null and nickName != ''">nick_name=#{nickName,jdbcType=VARCHAR},</if>
+            <if test="userPass != null and userPass != ''">user_pass=#{userPass,jdbcType=VARCHAR},</if>
+            <if test="userMobi != null and userMobi != ''">user_mobi=#{userMobi,jdbcType=VARCHAR},</if>
+            <if test="realName != null and realName != ''">real_name=#{realName,jdbcType=VARCHAR},</if>
+            <if test="headImg != null and headImg != ''">head_img=#{headImg,jdbcType=VARCHAR},</if>
+            <if test="userEmail != null and userEmail != ''">user_email=#{userEmail,jdbcType=VARCHAR},</if>
+            <if test="userType != null and userType != ''">user_type=#{userType,jdbcType=VARCHAR},</if>
+            <if test="appType != null and appType != ''">app_type=#{appType,jdbcType=VARCHAR},</if>
+            <if test="orgId != null">org_id = #{orgId,jdbcType=BIGINT},</if>
+            <if test="orgName != null and orgName != ''">org_name=#{orgName,jdbcType=VARCHAR},</if>
+            <if test="parentOrgName != null and parentOrgName != ''">
+                parent_org_name=#{parentOrgName,jdbcType=VARCHAR},
+            </if>
+            <if test="roles != null and roles != ''">roles=#{roles,jdbcType=VARCHAR},</if>
+            <if test="isPermitAll != null and isPermitAll != ''">is_permit_all=#{isPermitAll,jdbcType=VARCHAR},</if>
+            <if test="status != null and status != ''">status=#{status,jdbcType=VARCHAR},</if>
+            <if test="isBindMobile != null and isBindMobile != ''">is_bind_mobile=#{isBindMobile,jdbcType=CHAR},</if>
+            <if test="loginTimes != null and loginTimes != ''">login_times=#{loginTimes,jdbcType=INTEGER},</if>
+            <if test="ext != null and ext != ''">ext=#{ext,jdbcType=VARCHAR},</if>
+
+            <if test="remark != null  and remark != ''">city=#{remark,jdbcType=VARCHAR},</if>
+            <if test="lastLoginTime != null">last_login_time=#{lastLoginTime,jdbcType=TIMESTAMP},</if>
+            update_time = NOW(),
+            editor = #{editor,jdbcType=VARCHAR},
+        </trim>
+
+        where app_type = #{appType,jdbcType=VARCHAR} and user_name = #{userName,jdbcType=VARCHAR}
+    </update>
+
+
+    <update id="updateUserName" parameterType="java.util.Map">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="userName != null and userName != ''">user_name=#{userName,jdbcType=VARCHAR},</if>
+            <if test="userMobi != null and userMobi != ''">user_mobi=#{userMobi,jdbcType=VARCHAR},</if>
+            <if test="userPass != null and userPass != ''">user_pass=#{userPass,jdbcType=VARCHAR},</if>
+            update_time = NOW(),
+            editor = #{editor,jdbcType=VARCHAR},
+        </trim>
+        where app_type = #{appType,jdbcType=VARCHAR}
+        and user_id = #{userId, jdbcType=BIGINT}
+    </update>
+
+
+    <select id="getBy" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        where app_type = #{appType,jdbcType=VARCHAR} and (user_name = #{userName, jdbcType=VARCHAR}
+        or user_id = #{userName, jdbcType=BIGINT}
+        or user_mobi = #{userName, jdbcType=VARCHAR}
+        or user_email = #{userName,jdbcType=VARCHAR}
+        or wx_union_id = #{wxUnionId,jdbcType=VARCHAR}
+        or wx_open_id = #{wxOpenId,jdbcType=VARCHAR})
+        or id = #{userName, jdbcType=INTEGER}
+    </select>
+
+
+    <select id="getByUserName" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        where app_type = #{appType,jdbcType=VARCHAR} and user_name = #{userName, jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="getByOpenId" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        where wx_open_id = #{wxOpenId, jdbcType=VARCHAR}
+        and app_type = #{appType,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="getByUserId" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        where user_id = #{userId, jdbcType=BIGINT} and app_type = #{appType,jdbcType=VARCHAR}
+    </select>
+
+
+    <select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        where id = #{id, jdbcType=INTEGER}
+    </select>
+
+
+    <select id="selectBy" resultType="SysUser"
+            parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+        <if test="pageNum != null and pageSize != null">
+            limit #{pageNum},#{pageSize}
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+        select
+        count(*)
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+    </select>
+
+
+    <select id="selectHasRoles" resultType="SysUser"
+            parameterType="java.lang.String">
+        select
+        user_id,
+        user_name,
+        app_type,
+        roles
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} AND roles IS NOT NULL AND roles <![CDATA[ <>]]> '' AND roles
+        <![CDATA[ <>]]> '[]'
+    </select>
+
+
+    <select id="listManager" resultType="SysUser"
+            parameterType="java.lang.String">
+        select
+        user_id,
+        real_name,
+        user_type,
+        app_type,
+        head_img,
+        org_id
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR}
+        and user_type = 'ADMIN_USER'
+        and org_id IN
+        <foreach collection="orgIds" item="orgId" index="index" open="(" close=")" separator=",">
+            #{orgId}
+        </foreach>
+
+    </select>
+
+
+</mapper>

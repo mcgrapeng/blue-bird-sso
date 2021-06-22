@@ -1,0 +1,157 @@
+server:
+  tomcat:
+    max-swallow-size: -1
+  port: 8899
+#  ssl:
+#        key-store: classpath:server-prod.p12
+#        key-store-password: bird
+#        key-store-type: PKCS12
+#        key-alias: 1
+        # 证书有效期2年
+spring:
+  cloud:
+  #服务发现
+      nacos:
+          discovery:
+              server-addr:
+              service: ${spring.application.name} # 注册到 Nacos 的服务名。默认值为 ${spring.application.name}。
+              namespace: d95d1647-d532-4e04-a12f-cb1e8597a85f   #prod
+              enabled: true
+              register-enabled: true
+              #cluster-name: bird-SSO
+              #group: SSO_GROUP
+      zookeeper:
+          enabled: false
+      consul:
+          enabled: false
+      #服务容错（超时、限流、舱壁、断路器）
+#      sentinel:
+#          enabled:  true    # 设置是否开启 Sentinel。默认为 true 开启
+#          eager: true     # 是否饥饿加载。默认为 false 关闭  通过设置为 true 时，在项目启动时就会将 Sentinel 直接初始化，完成向 Sentinel 控制台进行注册。
+#          transport:
+#              dashboard: 127.0.0.1:8080
+#              # 指定和控制台通信的IP，若不配置，会自动选择一个IP注册
+#              #client-ip: 127.0.0.1
+#              # 指定和控制台通信的端口哦，默认值8719
+#              # 若不配置，会自动扫猫从8719开始扫猫，依次+1，知道值找到未被占用的端口
+#              #port: 8719
+#              # 心跳发送周期，默认值null
+#              # 但在SimpleHttpHeartbeatSender会用默认值10秒
+#              #heartbeat-interval-ms: 10000
+
+#          filter:
+#              url-patterns: /** # 拦截请求的地址。默认为 /*
+
+
+  # 数据源配置
+  # MYSQL 5 驱动：com.mysql.jdbc.Driver,MYSQL 6+ 驱动：com.mysql.cj.jdbc.Driver
+  datasource:
+     driver-class-name: com.mysql.cj.jdbc.Driver
+     url: jdbc:mysql://XXXX/bird_sso?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=CONVERT_TO_NULL&autoReconnect=true&failOverReadOnly=false
+     username:
+     password:
+     druid:
+       initialSize: 5
+       minIdle: 5
+       maxActive: 20
+       maxWait: 60000
+       timeBetweenEvictionRunsMillis: 60000
+       minEvictableIdleTimeMillis: 300000
+       validationQuery: SELECT 1
+       testWhileIdle: true
+       testOnBorrow: true
+       testOnReturn: false
+       poolPreparedStatements: true
+       maxPoolPreparedStatementPerConnectionSize: 20
+       filters: stat,wall
+       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+       stat-view-servlet:
+         allow: 127.0.0.1
+  redis:
+    database: 0
+    port:
+    host:
+    password:
+    lettuce:
+      pool:
+        max-active: 8 # 连接池最大连接数
+        max-wait: -1ms  # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        min-idle: 0 # 连接池中的最小空闲连接
+        max-idle: 8
+    timeout: 300ms  # 连接池中的最大空闲连接
+
+
+
+       # Druid 自定义配置，对应 DruidDataSource 中的 setting 方法的属性
+#      druid:
+#          min-idle: 0 # 池中维护的最小空闲连接数，默认为 0 个。
+#          max-active: 20 # 池中最大连接数，包括闲置和使用中的连接，默认为 8 个。
+#          filter:
+#              stat: # 配置 StatFilter ，对应文档 https://github.com/alibaba/druid/wiki/%E9%85%8D%E7%BD%AE_StatFilter
+#                  log-slow-sql: true # 开启慢查询记录
+#                  slow-sql-millis: 5000 # 慢 SQL 的标准，单位：毫秒
+#          stat-view-servlet: # 配置 StatViewServlet
+#              enabled: true # 是否开启 StatViewServlet
+#              login-username: bird # 账号
+#              login-password: bird # 密码
+
+
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.bird.sso.domain
+  configuration:
+    use-generated-keys: true
+    use-column-label: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    log-prefix: mybatis.log
+    map-underscore-to-camel-case: true
+
+
+# Dubbo 配置项，对应 DubboConfigurationProperties 类
+dubbo:
+  application:
+      # qos就是Dubbo的在线运维命令. 可以对服务进行动态的配置,控制以及查询.
+      qos:
+        enable: false
+        port: 33333
+        #不接受外网IP
+        qos-accept-foreign-ip: false
+        #当业务线程池满时，我们需要知道线程都在等待哪些资源、条件，以找到系统的瓶颈点或异常点。dubbo通过Jstack自动导出线程堆栈来保留现场，方便排查问题
+      parameter:
+        key: dump.directory
+        value: /bird/logs/sso/dump
+
+  scan:
+    base-packages: com.bird.sso.service.rpc # 指定 Dubbo 服务实现类的扫描基准包
+  # Dubbo 服务暴露的协议配置，对应 ProtocolConfig Map
+  protocols:
+    dubbo:
+      server: netty4
+      serialization: kryo
+      #optimizer: org.apache.dubbo.demo.SerializationOptimizerImpl
+      #服务线程池大小
+      threads: 200
+      #所有消息都派发到线程池，包括请求，响应，连接事件，断开事件，心跳等
+      dispatcher: all
+      #固定大小线程池，启动时建立线程，不关闭，一直持有。
+      threadpool: fixed
+      name: dubbo # 协议名称
+      port: -1  # 协议端口，-1 表示自增端口，从 20880 开始
+  #设置优雅停机超时时间，缺省超时时间是 10 秒，如果超时则强制关闭。
+  service:
+    shutdown:
+      wait: 15000
+
+  # Dubbo 服务注册中心配置，对应 RegistryConfig 类
+  registry:
+    address: spring-cloud://XXX # 指定 Dubbo 服务注册中心的地址
+  # Spring Cloud Alibaba Dubbo 专属配置项，对应 DubboCloudProperties 类
+  cloud:
+    subscribed-services: '' # 设置订阅的应用列表，默认为 * 订阅所有应用  ; 设置为 '' 表示空，不订阅任何的应用
+
+#  metadata-report:
+#    address: zookeeper://127.0.0.1:2181
+
+
+#  maxFileSize: 20
+#  maxRequestSize: 20

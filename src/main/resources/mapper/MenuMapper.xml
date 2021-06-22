@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bird.sso.mapper.MenuMapper">
+
+    <resultMap id="BaseResultMap" type="SysMenu">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="sid" property="sid" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="is_available" property="isAvailable" jdbcType="CHAR"/>
+        <result column="is_click" property="isClick" jdbcType="CHAR"/>
+        <result column="is_net" property="isNet" jdbcType="CHAR"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="pid" property="pid" jdbcType="BIGINT"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="app_type" property="appType" jdbcType="VARCHAR"/>
+        <result column="client_type" property="clientType" jdbcType="VARCHAR"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="path" property="path" jdbcType="VARCHAR"/>
+        <result column="router" property="router" jdbcType="VARCHAR"/>
+        <result column="method" property="method" jdbcType="VARCHAR"/>
+        <result column="posit" property="posit" jdbcType="VARCHAR"/>
+        <result column="ord" property="ord" jdbcType="INTEGER"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="editor" property="editor" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="table_name">  sys_menu </sql>
+
+    <sql id="Base_Column_List">
+        id,
+        sid,
+        `name`,
+        code,
+        is_available,
+        is_click,
+        is_net,
+        `level`,
+        pid,
+        `type`,
+        app_type,
+        client_type,
+        icon,
+        path,
+        router,
+        method,
+        posit,
+        ord,
+        creator,
+        remark,
+        create_time
+    </sql>
+
+
+    <sql id="condition_sql">
+        <if test="id != null ">and id = #{id,jdbcType=INTEGER}</if>
+        <if test="sid != null ">and sid = #{sid,jdbcType=BIGINT}</if>
+        <if test="pid != null ">and pid = #{pid,jdbcType=BIGINT}</if>
+        <if test="level != null and level != '' ">and `level` = #{level,jdbcType=VARCHAR}</if>
+        <if test="type != null and type != '' ">and `type` = #{type,jdbcType=VARCHAR}</if>
+        <if test="name != null and name != ''">and `name` like #{name,jdbcType=VARCHAR}</if>
+        <if test="code != null and code != ''">and code = #{code,jdbcType=VARCHAR}</if>
+        <if test="appType != null and appType != ''">and app_type = #{appType,jdbcType=VARCHAR}</if>
+        <if test="clientType != null and clientType != ''">and client_type = #{clientType,jdbcType=VARCHAR}</if>
+        <if test="isClick != null and isClick != ''">and is_click = #{isClick,jdbcType=CHAR}</if>
+        <if test="isAvailable != null and isAvailable != ''">and is_available = #{isAvailable,jdbcType=CHAR}</if>
+    </sql>
+
+
+    <sql id="upd_condition_sql">
+        <if test="sid != null ">and sid = #{sid,jdbcType=BIGINT}</if>
+        <if test="appType != null and appType != ''">and app_type = #{appType,jdbcType=VARCHAR}</if>
+    </sql>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="SysMenu">
+        insert into
+        <include refid="table_name"/>
+        ( sid ,
+        `name`,
+        code,
+        is_available,
+        is_click,
+        is_net,
+        `level`,
+        pid,
+        `type`,
+        app_type,
+        client_type,
+        icon,
+        path,
+        router,
+        method,
+        posit,
+        ord,
+        creator,
+        remark,
+        create_time)
+        values (
+        #{sid,jdbcType=BIGINT},
+        #{name,jdbcType=VARCHAR},
+        #{code,jdbcType=VARCHAR},
+        #{isAvailable,jdbcType=CHAR},
+        #{isClick,jdbcType=CHAR},
+        #{isNet,jdbcType=CHAR},
+        #{level,jdbcType=INTEGER},
+        #{pid,jdbcType=BIGINT},
+        #{type,jdbcType=VARCHAR},
+        #{appType,jdbcType=VARCHAR},
+        #{clientType,jdbcType=VARCHAR},
+        #{icon,jdbcType=VARCHAR},
+        #{path,jdbcType=VARCHAR},
+        #{router,jdbcType=VARCHAR},
+        #{method,jdbcType=VARCHAR},
+        #{posit,jdbcType=VARCHAR},
+        #{ord,jdbcType=INTEGER},
+        #{creator,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR},
+        now()
+        )
+    </insert>
+
+    <update id="update" parameterType="SysMenu">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="sid != null">sid=#{sid,jdbcType=BIGINT},</if>
+            <if test="name != null and name != ''">`name`=#{name,jdbcType=VARCHAR},</if>
+            <if test="code != null and code != ''">code=#{code,jdbcType=VARCHAR},</if>
+            <if test="isAvailable != null and isAvailable != ''">is_available=#{isAvailable,jdbcType=CHAR},</if>
+            <if test="isClick != null and isClick != ''">is_click=#{isClick,jdbcType=CHAR},</if>
+            <if test="isNet != null and isNet != ''">is_net=#{isNet,jdbcType=CHAR},</if>
+            <if test="level != null">`level`=#{level,jdbcType=INTEGER},</if>
+            <if test="pid != null">pid=#{pid,jdbcType=BIGINT},</if>
+            <if test="type != null and type != ''">`type`=#{type,jdbcType=VARCHAR},</if>
+            <if test="appType != null and appType != ''">app_type=#{appType,jdbcType=VARCHAR},</if>
+            <if test="clientType != null and clientType != ''">client_type=#{clientType,jdbcType=VARCHAR},</if>
+            <if test="icon != null and icon != ''">icon=#{icon,jdbcType=VARCHAR},</if>
+            <if test="path != null and path != ''">path=#{path,jdbcType=VARCHAR},</if>
+            <if test="router != null and router != ''">router=#{router,jdbcType=VARCHAR},</if>
+            <if test="method != null and method != ''">method=#{method,jdbcType=VARCHAR},</if>
+            <if test="posit != null and posit != ''">posit=#{posit,jdbcType=VARCHAR},</if>
+            <if test="ord != null">ord=#{ord,jdbcType=INTEGER},</if>
+            <if test="creator != null and creator != ''">creator=#{creator,jdbcType=VARCHAR},</if>
+            <if test="remark != null and remark != ''">remark=#{remark,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">create_time=#{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+        <where>
+            sid = #{sid,jdbcType=BIGINT} and app_type = #{appType,jdbcType=VARCHAR}
+            <if test="pid != null ">and pid = #{pid,jdbcType=BIGINT}</if>
+        </where>
+    </update>
+
+
+    <update id="updateBy" parameterType="java.util.Map">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="sid != null">sid=#{sid,jdbcType=BIGINT},</if>
+            <if test="name != null and name != ''">`name`=#{name,jdbcType=VARCHAR},</if>
+            <if test="code != null and code != ''">code=#{code,jdbcType=VARCHAR},</if>
+            <if test="isAvailable != null and isAvailable != ''">is_available=#{isAvailable,jdbcType=CHAR},</if>
+            <if test="isClick != null and isClick != ''">is_click=#{isClick,jdbcType=CHAR},</if>
+            <if test="isNet != null and isNet != ''">is_net=#{isNet,jdbcType=CHAR},</if>
+            <if test="level != null">`level`=#{level,jdbcType=INTEGER},</if>
+            <if test="pid != null">pid=#{pid,jdbcType=BIGINT},</if>
+            <if test="type != null and type != ''">`type`=#{type,jdbcType=VARCHAR},</if>
+            <if test="appType != null and appType != ''">app_type=#{appType,jdbcType=VARCHAR},</if>
+            <if test="clientType != null and clientType != ''">client_type=#{clientType,jdbcType=VARCHAR},</if>
+            <if test="icon != null and icon != ''">icon=#{icon,jdbcType=VARCHAR},</if>
+            <if test="path != null and path != ''">path=#{path,jdbcType=VARCHAR},</if>
+            <if test="router != null and router != ''">router=#{router,jdbcType=VARCHAR},</if>
+            <if test="method != null and method != ''">method=#{method,jdbcType=VARCHAR},</if>
+            <if test="posit != null and posit != ''">posit=#{posit,jdbcType=VARCHAR},</if>
+            <if test="ord != null">ord=#{ord,jdbcType=INTEGER},</if>
+            <if test="creator != null and creator != ''">creator=#{creator,jdbcType=VARCHAR},</if>
+            <if test="remark != null and remark != ''">remark=#{remark,jdbcType=VARCHAR},</if>
+            <if test="createTime != null">create_time=#{createTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+        <where>
+            sid = #{sid,jdbcType=BIGINT} and app_type = #{appType,jdbcType=VARCHAR}
+            <if test="pid != null ">and pid = #{pid,jdbcType=BIGINT}</if>
+        </where>
+    </update>
+
+
+    <update id="updateRele" parameterType="java.util.Map">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="isAvailable != null and isAvailable != ''">is_available=#{isAvailable,jdbcType=CHAR},</if>
+            <if test="isClick != null and isClick != ''">is_click=#{isClick,jdbcType=CHAR},</if>
+            <if test="level != null">`level`=#{level,jdbcType=INTEGER},</if>
+            <if test="pid != null">pid=#{pid,jdbcType=BIGINT},</if>
+        </trim>
+        <where>
+            sid = #{sid,jdbcType=BIGINT} and app_type = #{appType,jdbcType=VARCHAR}
+        </where>
+    </update>
+
+
+    <select id="getBy" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+    </select>
+
+
+    <select id="selectBy" resultType="SysMenu"
+            parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+        order by create_time desc , app_type
+    </select>
+
+
+    <select id="count" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+        select
+        count(*)
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+    </select>
+
+
+    <select id="selectByIds" resultType="SysMenu">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and id IN
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </select>
+
+
+    <select id="selectColumnBySids" resultType="SysMenu">
+        select
+        sid,
+        pid,
+        app_type,
+        client_type,
+        path,
+        icon,
+        is_click,
+        is_net,
+        `type`,
+        posit
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and sid IN
+        <foreach collection="sids" item="sid" index="index" open="(" close=")" separator=",">
+            #{sid}
+        </foreach>
+    </select>
+
+
+    <select id="selectAvailableBySids" resultType="SysMenu">
+        select
+        id,
+        sid,
+        pid,
+        `name`,
+        code,
+        `level`,
+        `type`,
+        app_type,
+        client_type,
+        is_click,
+        is_net,
+        icon,
+        path,
+        router,
+        method,
+        posit,
+        ord
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and is_available = 'Y' and client_type =
+        #{clientType,jdbcType=VARCHAR} and sid IN
+        <foreach collection="sids" item="sid" index="index" open="(" close=")" separator=",">
+            #{sid}
+        </foreach>
+    </select>
+
+
+    <select id="selectUnpAvailableBySids" resultType="SysMenu">
+        select
+        sid,
+        pid,
+        `name`,
+        code,
+        `level`,
+        `type`,
+        app_type,
+        client_type,
+        is_click,
+        is_net,
+        icon,
+        path,
+        router,
+        method,
+        posit,
+        ord
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and is_available = 'Y' and client_type = #{clientType,jdbcType=VARCHAR}
+        and sid IN
+        <foreach collection="sids" item="sid" index="index" open="(" close=")" separator=",">
+            #{sid}
+        </foreach>
+    </select>
+
+
+    <select id="selectPathUnpAvailableBySids" resultType="java.lang.String">
+        select
+        path
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and is_available = 'Y' and client_type = #{clientType,jdbcType=VARCHAR}
+        and sid IN
+        <foreach collection="sids" item="sid" index="index" open="(" close=")" separator=",">
+            #{sid}
+        </foreach>
+    </select>
+
+
+    <delete id="delete">
+        DELETE FROM
+        <include refid="table_name"/>
+        where app_type = #{appType,jdbcType=VARCHAR} and id = #{id, jdbcType=INTEGER}
+    </delete>
+
+
+    <delete id="deleteReference">
+        DELETE FROM
+        <include refid="table_name"/>
+        where app_type = #{appType,jdbcType=VARCHAR} and sid = #{sid, jdbcType=BIGINT}
+    </delete>
+</mapper>

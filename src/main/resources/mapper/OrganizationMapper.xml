@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bird.sso.mapper.OrganizationMapper">
+
+    <resultMap id="BaseResultMap" type="SysOrganization">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="sid" property="sid" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="app_type" property="appType" jdbcType="VARCHAR"/>
+        <result column="roles" property="roles" jdbcType="VARCHAR"/>
+        <result column="pid" property="pid" jdbcType="BIGINT"/>
+        <result column="root_id" property="rootId" jdbcType="BIGINT"/>
+        <result column="is_available" property="isAvailable" jdbcType="CHAR"/>
+        <result column="ord" property="ord" jdbcType="INTEGER"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="editor" property="editor" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="table_name">  sys_organization </sql>
+
+    <sql id="Base_Column_List">
+        id,
+        sid,
+        `name`,
+        code,
+        `level`,
+        app_type,
+        roles,
+        pid,
+        root_id,
+        is_available,
+        ord,
+        creator,
+        remark,
+        create_time
+    </sql>
+
+    <sql id="condition_sql">
+        <if test="sid != null ">and sid = #{sid,jdbcType=BIGINT}</if>
+        <if test="rootId != null ">and root_id = #{rootId,jdbcType=BIGINT}</if>
+        <if test="name != null and name != ''">and `name` LIKE #{name,jdbcType=VARCHAR}</if>
+        <if test="code != null and code != ''">and code = #{code,jdbcType=VARCHAR}</if>
+        <if test="appType != null and appType != ''">and app_type = #{appType,jdbcType=VARCHAR}</if>
+        <if test="pid != null ">and pid = #{pid,jdbcType=BIGINT}</if>
+    </sql>
+
+
+    <sql id="update_condition_sql">
+        <if test="id != null ">and id = #{id,jdbcType=INTEGER}</if>
+        <if test="sid != null ">and sid = #{sid,jdbcType=BIGINT}</if>
+        <if test="appType != null and appType != ''">and app_type = #{appType,jdbcType=VARCHAR}</if>
+        <if test="pid != null ">and pid = #{pid,jdbcType=BIGINT}</if>
+    </sql>
+
+
+    <insert id="insert" useGeneratedKeys="true" parameterType="SysOrganization">
+        insert into
+        <include refid="table_name"/>
+        (
+        sid,
+        `name`,
+        code,
+        `level`,
+        app_type,
+        roles,
+        pid,
+        root_id,
+        is_available,
+        ord,
+        creator,
+        remark,
+        create_time)
+        values (
+        #{sid,jdbcType=BIGINT},
+        #{name,jdbcType=VARCHAR},
+        #{code,jdbcType=VARCHAR},
+        #{level,jdbcType=INTEGER},
+        #{appType,jdbcType=VARCHAR},
+        #{roles,jdbcType=VARCHAR},
+        #{pid,jdbcType=BIGINT},
+        #{rootId,jdbcType=BIGINT},
+        #{isAvailable,jdbcType=CHAR},
+        #{ord,jdbcType=INTEGER},
+        #{creator,jdbcType=VARCHAR},
+        #{remark,jdbcType=VARCHAR},
+        now()
+        )
+    </insert>
+
+    <update id="update" parameterType="SysOrganization">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name != ''">`name`=#{name,jdbcType=VARCHAR},</if>
+            <if test="code != null and code != ''">code=#{code,jdbcType=VARCHAR},</if>
+            <if test="level != null">`level`=#{level,jdbcType=INTEGER},</if>
+            <if test="appType != null and appType != ''">app_type=#{appType,jdbcType=VARCHAR},</if>
+            <if test="roles != null and roles != ''">roles=#{roles,jdbcType=VARCHAR},</if>
+            <if test="pid != null">pid=#{pid,jdbcType=BIGINT},</if>
+            <if test="rootId != null">root_id=#{rootId,jdbcType=BIGINT},</if>
+            <if test="isAvailable != null and isAvailable != ''">is_available=#{isAvailable,jdbcType=CHAR},</if>
+            <if test="ord != null">ord=#{ord,jdbcType=INTEGER},</if>
+            <if test="remark != null and remark != ''">remark=#{remark,jdbcType=VARCHAR},</if>
+        </trim>
+
+        <where>
+            <include refid="update_condition_sql"/>
+        </where>
+    </update>
+
+
+    <update id="updateBy" parameterType="java.util.Map">
+        update
+        <include refid="table_name"/>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name != ''">`name`=#{name,jdbcType=VARCHAR},</if>
+            <if test="code != null and code != ''">code=#{code,jdbcType=VARCHAR},</if>
+            <if test="level != null">`level`=#{level,jdbcType=INTEGER},</if>
+            <if test="appType != null and appType != ''">app_type=#{appType,jdbcType=VARCHAR},</if>
+            <if test="roles != null and roles != ''">roles=#{roles,jdbcType=VARCHAR},</if>
+            <if test="pid != null">pid=#{pid,jdbcType=BIGINT},</if>
+            <if test="rootId != null">root_id=#{rootId,jdbcType=BIGINT},</if>
+            <if test="isAvailable != null and isAvailable != ''">is_available=#{isAvailable,jdbcType=CHAR},</if>
+            <if test="ord != null">ord=#{ord,jdbcType=INTEGER},</if>
+            <if test="remark != null and remark != ''">remark=#{remark,jdbcType=VARCHAR},</if>
+        </trim>
+
+        <where>
+            <include refid="update_condition_sql"/>
+        </where>
+    </update>
+
+
+    <select id="getBy" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+    </select>
+
+
+    <select id="selectBy" resultType="SysOrganization"
+            parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+        <if test="page != null and pageSize != null">
+            limit #{page},#{pageSize}
+        </if>
+    </select>
+
+
+    <select id="selectHasRoles" resultType="SysOrganization"
+            parameterType="java.lang.String">
+        select
+        id,
+        sid,
+        pid,
+        root_id,
+        app_type,
+        roles
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} AND roles IS NOT NULL AND roles <![CDATA[ <>]]> '' AND roles
+        <![CDATA[ <>]]> '[]'
+    </select>
+
+
+    <select id="selectByAppType" resultType="SysOrganization"
+            parameterType="java.lang.String">
+        select
+        sid,
+        pid,
+        root_id,
+        app_type,
+        `name`,
+        code
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and is_available = 'Y'
+    </select>
+
+
+    <select id="selectByAppType_Level" resultType="SysOrganization">
+        select
+        sid,
+        pid,
+        root_id,
+        app_type,
+        `name`,
+        code
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and is_available = 'Y' and `level` = #{level,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="selectBasicByAppType" resultType="SysOrganization"
+            parameterType="java.lang.String">
+        select
+        sid,
+        pid,
+        root_id,
+        app_type,
+        `name`,
+        code
+        from
+        <include refid="table_name"/>
+
+        <where>
+            <if test="appType != null and appType != ''">and app_type = #{appType,jdbcType=VARCHAR}</if>
+            and is_available = 'Y'
+        </where>
+    </select>
+
+    <select id="count" resultType="java.lang.Integer"
+            parameterType="java.util.Map">
+        select
+        count(*)
+        from
+        <include refid="table_name"/>
+        <where>
+            <include refid="condition_sql"/>
+        </where>
+    </select>
+
+
+    <select id="selectByIds" resultType="SysOrganization">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and id IN
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </select>
+
+
+    <select id="listByRootId" resultType="SysOrganization">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and root_id = #{rootId,jdbcType=BIGINT}
+    </select>
+
+
+    <select id="pageUnionByPid" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and pid = #{pid, jdbcType=BIGINT}
+        UNION ALL
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and sid = #{pid, jdbcType=BIGINT}
+        <if test="pageNum != null and pageSize != null">
+            LIMIT #{pageNum},#{pageSize}
+        </if>
+    </select>
+
+
+    <select id="listUnionByPid" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and pid = #{pid, jdbcType=BIGINT}
+        UNION ALL
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        <include refid="table_name"/>
+        WHERE app_type = #{appType,jdbcType=VARCHAR} and sid = #{pid, jdbcType=BIGINT}
+    </select>
+
+
+    <delete id="delete">
+        DELETE FROM
+        <include refid="table_name"/>
+        where app_type = #{appType,jdbcType=VARCHAR} and id = #{id, jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteReference">
+        DELETE FROM
+        <include refid="table_name"/>
+        where sid = #{sid, jdbcType=BIGINT} and app_type = #{appType,jdbcType=VARCHAR}
+    </delete>
+
+</mapper>
